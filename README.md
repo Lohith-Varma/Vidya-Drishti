@@ -1,2 +1,2 @@
 # Vidya-Drishti
-NSRITs dedicated dashboard for tracking student progress, coding assessments, and competitive performance.
+NSRIT's dedicated dashboard for tracking student progress, coding assessments, and competitive performance.
