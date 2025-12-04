@@ -1,0 +1,5 @@
+.login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#ffd1e6 0%, #fff7e6 35%, #dff0ff 100%); }
+.login-box { width:100%; max-width:420px; background:#fff; border-radius:12px; padding:20px; box-shadow:0 6px 24px rgba(10,10,15,0.06); }
+.signin-btn { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #e6e7eb; }
+.note { margin-top:10px; color:#6b7280; font-size:13px; }
+.small-text { color:#6b7280; font-size:14px; }

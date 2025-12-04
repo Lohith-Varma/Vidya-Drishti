@@ -1,0 +1,9 @@
+.code-sandbox .editor-placeholder {
+  margin-top:10px;
+  padding:14px;
+  border-radius:8px;
+  background:#0f172a0a;
+  color:#374151;
+  font-family: monospace;
+}
+.small-text { color:#6b7280; font-size:14px; }

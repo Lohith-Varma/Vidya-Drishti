@@ -1,0 +1,7 @@
+.admin-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.admin-grid { display:flex; gap:18px; }
+.admin-left { flex:2; }
+.admin-right { flex:1; display:flex; flex-direction:column; gap:12px; }
+.two-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.submissions .table th, .submissions .table td { padding:8px 6px; text-align:left; }
+.small-text { color:#6b7280; font-size:14px; }

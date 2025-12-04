@@ -1,0 +1,93 @@
+.leftnav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 6px 20px rgba(10,10,15,0.08);
+    transition: width .18s ease;
+    height: 100vh;    /* add this */
+    backdrop-filter: blur(18px);
+}
+.leftnav.expanded { width: 256px; }
+.leftnav.collapsed { width: 64px; }
+
+.brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:16px;
+}
+.logo {
+    width:36px;height:36px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-weight:700;background:linear-gradient(135deg,#3b82f6,#06b6d4);
+}
+
+.brand-title { 
+    font-weight:600; 
+    font-size:16px; 
+}
+
+.toggle-btn {
+    margin: 8px 12px;
+    padding: 8px 10px;
+    border-radius:8px;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    text-align:left;
+}
+
+.nav { 
+    padding: 8px 12px; 
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; 
+}
+
+.nav-link { 
+    display:flex; 
+    align-items:center; 
+    gap:12px; 
+    padding:10px 12px; 
+    border-radius:8px; 
+    text-decoration:none; 
+    color:inherit; 
+}
+
+.nav-link:hover { 
+    background:#f3f4f6; 
+}
+
+.nav-icon { 
+    width:28px; 
+    text-align:center; 
+    font-size:18px; 
+}
+
+.leftnav-bottom { 
+    padding:14px; 
+    border-top:1px solid rgba(15,23,42,0.05); 
+    display:flex; 
+    gap:12px; 
+    align-items:center; 
+}
+
+.avatar { 
+    width:44px; 
+    height:44px; 
+    border-radius:999px; 
+}
+
+.profile-name { 
+    font-weight:600; 
+}
+
+.profile-email { 
+    font-size:12px; 
+    color:#6b7280; 
+}
+
+.leftnav {
+
+}
