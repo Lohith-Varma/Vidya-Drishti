@@ -6,8 +6,8 @@ export default function AdminHome() {
   return (
     <div className="admin-home">
       <div className="admin-header">
-        <h2>Welcome back, Prof. Mehta</h2>
-        <div className="meta small-text">CS Dept • NSRIT</div>
+        <h2>Welcome back, Prof. V S R Murthy</h2>
+        <div className="meta small-text">CSE Dept • NSRIT</div>
       </div>
 
       <div className="admin-grid">
@@ -24,9 +24,9 @@ export default function AdminHome() {
                 <tr><th>Name</th><th>Assessment</th><th>Score</th></tr>
               </thead>
               <tbody>
-                <tr><td>Rohit</td><td>Weekly: Graphs</td><td>82</td></tr>
-                <tr><td>Anita</td><td>Mock: DP</td><td>68</td></tr>
-                <tr><td>Vikram</td><td>College Test</td><td>91</td></tr>
+                <tr><td>Lohith</td><td>Weekly: Graphs</td><td>82</td></tr>
+                <tr><td>Siddhartha</td><td>Mock: DP</td><td>68</td></tr>
+                <tr><td>Gnana Deep</td><td>College Test</td><td>91</td></tr>
               </tbody>
             </table>
           </div>

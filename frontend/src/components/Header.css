@@ -1,12 +1,15 @@
 .header {
   height: 64px;
-  /* width: 1200px; */
   display: flex;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
   justify-content: space-between;
   padding: 0 18px;
   border-bottom: 1px solid rgba(15,23,42,0.04);
   background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
 }
 .role-select {
   padding: 8px;
