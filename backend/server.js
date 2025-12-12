@@ -1,8 +1,20 @@
-import express from "express";
+// backend/server.js
+const express = require("express");
+const cors = require("cors");
+
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Server running");
-});
+app.use(cors());
+app.use(express.json());
 
-app.listen(5000, () => console.log("Server started on port 5000"));
+// ROUTES (we’ll add them below)
+const leetcodeRoutes = require("./routes/leetcode");
+const hackerrankRoutes = require("./routes/hackerrank");
+
+app.use("/api/leetcode", leetcodeRoutes);
+app.use("/api/hackerrank", hackerrankRoutes);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
+});

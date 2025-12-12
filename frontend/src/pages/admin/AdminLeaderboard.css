@@ -1,6 +1,6 @@
-/* === STUDENT LEADERBOARD - PROFESSIONAL CLEAN UI === */
+/* === ADMIN LEADERBOARD - PROFESSIONAL CLEAN UI === */
 
-.student-leaderboard-container {
+.admin-leaderboard-container {
   max-width: 1000px;
   margin: 40px auto;
   padding: 24px;
@@ -10,7 +10,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.student-title {
+.admin-title {
   font-size: 30px;
   text-align: center;
   margin-bottom: 28px;
@@ -18,16 +18,16 @@
   color: #2c3550;
 }
 
-.student-table {
+.admin-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.student-table thead {
+.admin-table thead {
   background: #f3f6fc;
 }
 
-.student-table th {
+.admin-table th {
   padding: 14px;
   font-size: 16px;
   font-weight: 600;
@@ -35,18 +35,18 @@
   border-bottom: 2px solid #dde3ee;
 }
 
-.student-table td {
+.admin-table td {
   padding: 14px;
   font-size: 15px;
   border-bottom: 1px solid #e3e7f0;
 }
 
-.student-table tr:hover {
+.admin-table tr:hover {
   background: #f9fbff;
   transition: 0.2s;
 }
 
-.student-rank-badge {
+.admin-rank-badge {
   padding: 6px 12px;
   border-radius: 6px;
   background: #4f7cff;
@@ -55,7 +55,7 @@
   font-size: 14px;
 }
 
-.student-avatar {
+.admin-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;

@@ -14,24 +14,32 @@ import StudentProfile from "./pages/student/StudentProfile";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminProfile from "./pages/admin/AdminProfile";
+import AdminLeaderboard from "./pages/admin/AdminLeaderboard";
 import CreateAssessment from "./pages/admin/CreateAssessment";
 
 // auth
 import LoginPage from "./pages/auth/LoginPage";
 
 function App() {
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [role, setRole] = React.useState("admin"); // teacher is admin by default
+  const [role, setRole] = React.useState("admin");
 
   return (
     <Router>
       <div className="app">
-        <LeftNav collapsed={collapsed} setCollapsed={setCollapsed} role={role} />
+        <LeftNav role={role} /> {/* removed collapsed props */}
+
         <div className="main">
           <Header role={role} setRole={setRole} />
+
           <div className="content">
             <Routes>
-              <Route path="/" element={role === "admin" ? <AdminHome /> : <StudentHome />} />
+              {/* role-based home */}
+              <Route
+                path="/"
+                element={
+                  role === "admin" ? <AdminHome /> : <StudentHome />
+                }
+              />
 
               {/* student routes */}
               <Route path="/student/assessments" element={<StudentAssessments />} />
@@ -39,9 +47,10 @@ function App() {
               <Route path="/student/profile" element={<StudentProfile />} />
 
               {/* admin routes */}
-              <Route path="/teacher/create" element={<CreateAssessment />} />
-              <Route path="/teacher/analytics" element={<AdminAnalytics />} />
-              <Route path="/teacher/profile" element={<AdminProfile />} />
+              <Route path="/admin/create" element={<CreateAssessment />} />
+              <Route path="/admin/analytics" element={<AdminAnalytics />} />
+              <Route path="/admin/profile" element={<AdminProfile />} />
+              <Route path="/admin/leaderboard" element={<AdminLeaderboard />} />
 
               {/* auth */}
               <Route path="/login" element={<LoginPage />} />
