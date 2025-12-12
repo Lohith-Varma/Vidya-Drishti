@@ -1,7 +1,111 @@
-.admin-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-.admin-grid { display:flex; gap:18px; }
-.admin-left { flex:2; }
-.admin-right { flex:1; display:flex; flex-direction:column; gap:12px; }
-.two-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
-.submissions .table th, .submissions .table td { padding:8px 6px; text-align:left; }
-.small-text { color:#6b7280; font-size:14px; }
+/* ------------------------------
+   PAGE STRUCTURE
+--------------------------------*/
+.adminHome {
+  padding: 24px 32px;
+  color: #1f2937; /* Gray-800 */
+  font-family: "Inter", sans-serif;
+}
+
+.pageTitle {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.subMeta {
+  color: #6b7280; /* Gray-500 */
+  font-size: 14px;
+}
+
+/* ------------------------------
+   GRID LAYOUT
+--------------------------------*/
+.dashboardGrid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 22px;
+}
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ------------------------------
+   STAT CARDS (Codolio Inspired)
+--------------------------------*/
+.statsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.statValue {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827; /* Slightly darker */
+}
+
+/* ------------------------------
+   SUBMISSIONS TABLE
+--------------------------------*/
+.submissionsCard {
+  padding: 20px;
+}
+
+.sectionTitle {
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Clean table style */
+.styledTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.styledTable thead {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.styledTable th {
+  padding: 10px 8px;
+  color: #374151;
+  font-weight: 500;
+  text-align: left;
+}
+
+.styledTable td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.styledTable tr:hover {
+  background: #f9fafb;
+  transition: 0.2s;
+}
+
+/* Score highlight */
+.score {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Hint text inside cards (right side) */
+.hintText {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 6px;
+}
