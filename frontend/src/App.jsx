@@ -16,6 +16,7 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminProfile from "./pages/admin/AdminProfile";
 import AdminLeaderboard from "./pages/admin/AdminLeaderboard";
 import CreateAssessment from "./pages/admin/CreateAssessment";
+import CodingProfiles from "./pages/admin/CodingProfiles";
 
 // auth
 import LoginPage from "./pages/auth/LoginPage";
@@ -47,10 +48,13 @@ function App() {
               <Route path="/student/profile" element={<StudentProfile />} />
 
               {/* admin routes */}
+              <Route path="/admin/home" element={<AdminHome />} />
               <Route path="/admin/create" element={<CreateAssessment />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/profile" element={<AdminProfile />} />
               <Route path="/admin/leaderboard" element={<AdminLeaderboard />} />
+              <Route path="/admin/coding-profiles" element={<CodingProfiles />} />
+
 
               {/* auth */}
               <Route path="/login" element={<LoginPage />} />

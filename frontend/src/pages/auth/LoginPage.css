@@ -1,5 +1,110 @@
-.login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#ffd1e6 0%, #fff7e6 35%, #dff0ff 100%); }
-.login-box { width:100%; max-width:420px; background:#fff; border-radius:12px; padding:20px; box-shadow:0 6px 24px rgba(10,10,15,0.06); }
-.signin-btn { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #e6e7eb; }
-.note { margin-top:10px; color:#6b7280; font-size:13px; }
-.small-text { color:#6b7280; font-size:14px; }
+/* Wrapper */
+.loginWrapper {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  font-family: "Inter", sans-serif;
+}
+
+/* Gradient Banner */
+.loginBanner {
+  background: linear-gradient(to right, #4f46e5, #6366f1, #818cf8);
+  padding: 48px 32px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.bannerTitle {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.bannerSubtitle {
+  margin-top: 6px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* Login Card */
+.loginCard {
+  width: 380px;
+  margin: 40px auto;
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.loginTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.loginSubtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.loginForm label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #374151;
+}
+
+.loginForm input {
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border 0.2s;
+}
+
+.loginForm input:focus {
+  border: 1px solid #6366f1;
+}
+
+/* Button */
+.loginBtn {
+  margin-top: 4px;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.loginBtn:hover {
+  opacity: 0.95;
+}
+
+/* Footer text */
+.footerText {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.linkText {
+  color: #4f46e5;
+  cursor: pointer;
+  font-weight: 500;
+}

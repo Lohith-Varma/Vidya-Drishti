@@ -1,78 +1,93 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminHome.css";
-import Card from "../../components/Card";
 
 export default function AdminHome() {
+  const [stats, setStats] = useState({
+    activeTests: 3,
+    avgScore: 71,
+    submissionsToday: 42,
+    topStudent: "Gnana Deep"
+  });
+
+  const [submissions, setSubmissions] = useState([
+    { name: "Lohith", assessment: "Weekly: Graphs", score: 82 },
+    { name: "Siddhartha", assessment: "Mock: DP", score: 68 },
+    { name: "Gnana Deep", assessment: "College Test", score: 91 }
+  ]);
+
   return (
     <div className="adminHome">
 
-      {/* Header Section */}
-      <div className="adminHeader">
-        <div>
-          <h1 className="pageTitle">Welcome back, Prof. V S R Murthy 👋</h1>
-          <p className="subMeta">CSE Dept • NSRIT</p>
+      {/* HEADER */}
+      <div className="homeHeader">
+        <h1>Welcome back, Prof. V S R Murthy 👋</h1>
+        <p>CSE Dept • NSRIT</p>
+      </div>
+
+      {/* KPI CARDS */}
+      <div className="kpiGrid">
+        <div className="kpiCard">
+          <span className="kpiLabel">Active Assessments</span>
+          <span className="kpiValue">{stats.activeTests}</span>
+        </div>
+
+        <div className="kpiCard">
+          <span className="kpiLabel">Average Class Score</span>
+          <span className="kpiValue">{stats.avgScore}%</span>
+        </div>
+
+        <div className="kpiCard">
+          <span className="kpiLabel">Submissions Today</span>
+          <span className="kpiValue">{stats.submissionsToday}</span>
+        </div>
+
+        <div className="kpiCard highlight">
+          <span className="kpiLabel">Top Performer</span>
+          <span className="kpiValue">{stats.topStudent}</span>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div className="dashboardGrid">
+      {/* MAIN GRID */}
+      <div className="homeGrid">
 
-        {/* LEFT SECTION */}
-        <div className="leftSection">
-
-          {/* Stats Cards */}
-          <div className="statsRow">
-            <Card title="Active Assessments">
-              <span className="statValue">3 ongoing</span>
-            </Card>
-
-            <Card title="Average Class Score">
-              <span className="statValue">71%</span>
-            </Card>
-          </div>
-
-          {/* Recent Submissions */}
-          <div className="card submissionsCard">
-            <h2 className="sectionTitle">Recent Submissions</h2>
-
-            <table className="styledTable">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Assessment</th>
-                  <th>Score</th>
+        {/* TABLE */}
+        <div className="card">
+          <h3>Recent Submissions</h3>
+          <table className="homeTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Assessment</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submissions.map((s, i) => (
+                <tr key={i}>
+                  <td>{s.name}</td>
+                  <td>{s.assessment}</td>
+                  <td className="score">{s.score}</td>
                 </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Lohith</td>
-                  <td>Weekly: Graphs</td>
-                  <td className="score">82</td>
-                </tr>
-                <tr>
-                  <td>Siddhartha</td>
-                  <td>Mock: DP</td>
-                  <td className="score">68</td>
-                </tr>
-                <tr>
-                  <td>Gnana Deep</td>
-                  <td>College Test</td>
-                  <td className="score">91</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* RIGHT SECTION */}
-        <div className="rightSection">
-          <Card title="Create Assessment">
-            <p className="hintText">Click to create a new timed test →</p>
-          </Card>
+        {/* QUICK ACTIONS */}
+        <div className="card quickActions">
+          <h3>Quick Actions</h3>
 
-          <Card title="Top Students">
-            <p className="hintText">Vikram • Rohit • Anita</p>
-          </Card>
+          <button className="actionBtn primary">
+            ➕ Create New Assessment
+          </button>
+
+          <button className="actionBtn">
+            📊 View Analytics
+          </button>
+
+          <button className="actionBtn">
+            💻 Coding Profiles
+          </button>
         </div>
       </div>
     </div>

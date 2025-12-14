@@ -1,0 +1,116 @@
+.codingProfiles {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  padding: 28px 36px;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.codingHeader {
+  margin-bottom: 20px;
+}
+
+.codingHeader h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.codingHeader p {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* STUDENT LIST */
+.studentList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* STUDENT ITEM */
+.studentItem {
+  border: 1px solid #e6edf3;
+  border-radius: 14px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* CLICKABLE STUDENT ROW */
+.studentRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  cursor: pointer;
+}
+
+.studentRow:hover {
+  background: #f8fafc;
+}
+
+.studentRow h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.roll {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.toggle {
+  font-size: 22px;
+  color: #4f46e5;
+}
+
+/* EXPANDED BOX */
+.profilesBox {
+  padding: 12px 20px 16px;
+  border-top: 1px solid #e6edf3;
+  background: #fafcff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* PROFILE ROW */
+.profileRow {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  padding: 10px 12px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+/* BADGES */
+.badge {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.badge.leetcode { background: #fff7ed; color: #c2410c; }
+.badge.codeforces { background: #eff6ff; color: #1d4ed8; }
+.badge.codechef { background: #fef2f2; color: #991b1b; }
+.badge.hackerrank { background: #ecfdf5; color: #047857; }
+.badge.github { background: #f1f5f9; color: #0f172a; }
+.badge.linkedin { background: #eff6ff; color: #1e40af; }
+
+/* USERNAME */
+.username {
+  font-size: 14px;
+}
+
+/* VIEW LINK */
+.viewLink {
+  font-size: 13px;
+  color: #4f46e5;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.viewLink:hover {
+  text-decoration: underline;
+}

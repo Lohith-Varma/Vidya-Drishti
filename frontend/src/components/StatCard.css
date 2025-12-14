@@ -1,0 +1,19 @@
+.statCard {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+  border: 1px solid #f1f5f9;
+}
+
+.statCard h4 {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
+}

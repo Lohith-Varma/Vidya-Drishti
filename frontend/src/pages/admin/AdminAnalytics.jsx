@@ -1,6 +1,6 @@
 import React from "react";
 import "./AdminAnalytics.css";
-import Card from "../../components/Card";
+import Card from "../../components/StatCard";
 
 export default function AdminAnalytics() {
   return (
