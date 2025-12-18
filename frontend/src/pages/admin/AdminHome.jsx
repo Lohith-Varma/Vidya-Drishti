@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminHome.css";
 
 export default function AdminHome() {
+  const [stats, setStats] = useState({
+    activeTests: 3,
+    avgScore: 71,
+    submissionsToday: 42,
+    topStudent: "Gnana Deep"
+  });
+
+  const [submissions, setSubmissions] = useState([
+    { name: "Lohith", assessment: "Weekly: Graphs", score: 82 },
+    { name: "Siddhartha", assessment: "Mock: DP", score: 68 },
+    { name: "Gnana Deep", assessment: "College Test", score: 91 }
+  ]);
+
   return (
     <div className="adminHome">
       {/* HEADER */}

@@ -1,0 +1,25 @@
+.customTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.customTable thead {
+  background: #f8fafc;
+}
+
+.customTable th {
+  padding: 10px;
+  text-align: left;
+  font-weight: 500;
+  color: #334155;
+}
+
+.customTable td {
+  padding: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.customTable tr:hover td {
+  background: #f8fafc;
+}
