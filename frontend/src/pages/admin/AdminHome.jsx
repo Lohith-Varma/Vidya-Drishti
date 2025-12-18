@@ -17,43 +17,24 @@ export default function AdminHome() {
 
   return (
     <div className="adminHome">
-
       {/* HEADER */}
-      <div className="homeHeader">
+      <div className="pageHeader">
         <h1>Welcome back, Prof. V S R Murthy 👋</h1>
         <p>CSE Dept • NSRIT</p>
       </div>
 
-      {/* KPI CARDS */}
-      <div className="kpiGrid">
-        <div className="kpiCard">
-          <span className="kpiLabel">Active Assessments</span>
-          <span className="kpiValue">{stats.activeTests}</span>
-        </div>
-
-        <div className="kpiCard">
-          <span className="kpiLabel">Average Class Score</span>
-          <span className="kpiValue">{stats.avgScore}%</span>
-        </div>
-
-        <div className="kpiCard">
-          <span className="kpiLabel">Submissions Today</span>
-          <span className="kpiValue">{stats.submissionsToday}</span>
-        </div>
-
-        <div className="kpiCard highlight">
-          <span className="kpiLabel">Top Performer</span>
-          <span className="kpiValue">{stats.topStudent}</span>
-        </div>
+      {/* STATS */}
+      <div className="statsRow">
+        <StatCard title="Active Assessments" value="3 ongoing" />
+        <StatCard title="Average Class Score" value="71%" />
+        <StatCard title="Create Assessment" value="Quick link to create test" />
       </div>
 
-      {/* MAIN GRID */}
-      <div className="homeGrid">
-
-        {/* TABLE */}
-        <div className="card">
+      {/* GRID */}
+      <div className="grid">
+        <div className="card large">
           <h3>Recent Submissions</h3>
-          <table className="homeTable">
+          <table>
             <thead>
               <tr>
                 <th>Name</th>
@@ -62,34 +43,27 @@ export default function AdminHome() {
               </tr>
             </thead>
             <tbody>
-              {submissions.map((s, i) => (
-                <tr key={i}>
-                  <td>{s.name}</td>
-                  <td>{s.assessment}</td>
-                  <td className="score">{s.score}</td>
-                </tr>
-              ))}
+              <tr><td>Lohith</td><td>Weekly: Graphs</td><td>82</td></tr>
+              <tr><td>Siddhartha</td><td>Mock: DP</td><td>68</td></tr>
+              <tr><td>Gnana Deep</td><td>College Test</td><td>91</td></tr>
             </tbody>
           </table>
         </div>
 
-        {/* QUICK ACTIONS */}
-        <div className="card quickActions">
-          <h3>Quick Actions</h3>
-
-          <button className="actionBtn primary">
-            ➕ Create New Assessment
-          </button>
-
-          <button className="actionBtn">
-            📊 View Analytics
-          </button>
-
-          <button className="actionBtn">
-            💻 Coding Profiles
-          </button>
+        <div className="card">
+          <h3>Top Students</h3>
+          <p>Vikram • Rohit • Anita</p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function StatCard({ title, value }) {
+  return (
+    <div className="statCard">
+      <span>{title}</span>
+      <strong>{value}</strong>
     </div>
   );
 }

@@ -2,15 +2,16 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   FiHome,
-  FiPlusCircle,
   FiBarChart2,
   FiUsers,
+  FiExternalLink,
   FiUser,
   FiExternalLink,
   FiBookOpen,
 } from "react-icons/fi";
 import "./LeftNav.css";
 
+export default function LeftNav({ role }) {
 export default function LeftNav({ role }) {
   const location = useLocation();
 

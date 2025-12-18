@@ -2,19 +2,23 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
 
   height: var(--navbar-height);
-  background: #ffffff;
+  width: 100%;
+
+  background: white;
   border-bottom: 1px solid #e6edf3;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 24px;
+  padding: 0 20px;
   z-index: 100;
+
+  color: black;
 }
+
 
 /* .role-select {
   padding: 8px;
@@ -23,7 +27,6 @@
 } */
  
 .header-right {
-  color: #374151;
   font-size: 14px;
 }
 

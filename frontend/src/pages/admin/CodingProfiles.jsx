@@ -1,29 +1,30 @@
 import React, { useState } from "react";
+import { FiChevronDown, FiChevronRight, FiExternalLink } from "react-icons/fi";
 import "./CodingProfiles.css";
 
-const mockStudents = [
+const students = [
   {
-    name: "Gnana Deep",
-    roll: "21CSE102",
+    name: "Lohith Varma",
+    roll: "23NU1A0517",
     profiles: {
-      LeetCode: "gnanadeep",
-      Codeforces: "gnana_cf",
-      CodeChef: "gnanacc",
-      HackerRank: "gnana_hr",
-      GitHub: "gnanadeep",
-      LinkedIn: "gnana-deep",
+      LeetCode: "https://leetcode.com/u/dklohithvarma",
+      Codeforces: "https://codeforces.com/profile/lohith",
+      CodeChef: "https://www.codechef.com/users/lohithvarma",
+      HackerRank: "https://www.hackerrank.com/lohith_varma",
+      GitHub: "https://github.com/Lohith-Varma/",
+      LinkedIn: "https://www.linkedin.com/in/LohtihVarma/",
     },
   },
   {
     name: "Siddhartha",
     roll: "21CSE087",
     profiles: {
-      LeetCode: "sid_codes",
-      Codeforces: "sid_cf",
-      CodeChef: "sid_cc",
-      HackerRank: "sid_hr",
-      GitHub: "siddhartha-dev",
-      LinkedIn: "siddhartha",
+      LeetCode: "https://leetcode.com/u/msvssiddhartha",
+      Codeforces: "https://codeforces.com/profile/sid_cf",
+      CodeChef: "https://www.codechef.com/users/sid_cc",
+      HackerRank: "https://www.hackerrank.com/sid_hr",
+      GitHub: "https://github.com/siddu0426",
+      LinkedIn: "https://www.linkedin.com/in/siddhartha-mylavarapu/",
     },
   },
 ];
@@ -37,73 +38,51 @@ export default function CodingProfiles() {
 
   return (
     <div className="codingProfiles">
-      <div className="codingHeader">
-        <h1>Coding Profiles</h1>
-        <p>Click on a student to view their coding profiles</p>
-      </div>
+      <h1>Coding Profiles</h1>
+      <p className="subtitle">
+        View student competitive programming and professional profiles
+      </p>
 
       <div className="studentList">
-        {mockStudents.map((student, index) => (
-          <div key={index} className="studentItem">
-            {/* STUDENT HEADER */}
-            <div
-              className="studentRow"
-              onClick={() => toggleStudent(index)}
-            >
-              <div>
-                <h3>{student.name}</h3>
-                <span className="roll">{student.roll}</span>
-              </div>
-              <span className="toggle">
-                {openIndex === index ? "−" : "+"}
-              </span>
+        {students.map((student, index) => {
+          const isOpen = openIndex === index;
+
+          return (
+            <div key={student.roll} className="studentBlock">
+              {/* STUDENT HEADER */}
+              <button
+                className="studentHeader"
+                onClick={() => toggleStudent(index)}
+              >
+                <div>
+                  <h3>{student.name}</h3>
+                  <span>{student.roll}</span>
+                </div>
+
+                {isOpen ? <FiChevronDown /> : <FiChevronRight />}
+              </button>
+
+              {/* PROFILES */}
+              {isOpen && (
+                <div className="profiles">
+                  {Object.entries(student.profiles).map(
+                    ([platform, link]) => (
+                      <button
+                        key={platform}
+                        className={`profileRow ${platform.toLowerCase()}`}
+                        onClick={() => window.open(link, "_blank")}
+                      >
+                        <span>{platform}</span>
+                        <FiExternalLink />
+                      </button>
+                    )
+                  )}
+                </div>
+              )}
             </div>
-
-            {/* EXPANDED CONTENT */}
-            {openIndex === index && (
-              <div className="profilesBox">
-                {Object.entries(student.profiles).map(
-                  ([platform, username]) => (
-                    <ProfileRow
-                      key={platform}
-                      platform={platform}
-                      username={username}
-                    />
-                  )
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
-    </div>
-  );
-}
-
-function ProfileRow({ platform, username }) {
-  const links = {
-    LeetCode: `https://leetcode.com/${username}`,
-    Codeforces: `https://codeforces.com/profile/${username}`,
-    CodeChef: `https://www.codechef.com/users/${username}`,
-    HackerRank: `https://www.hackerrank.com/${username}`,
-    GitHub: `https://github.com/${username}`,
-    LinkedIn: `https://linkedin.com/in/${username}`,
-  };
-
-  return (
-    <div className="profileRow">
-      <span className={`badge ${platform.toLowerCase()}`}>
-        {platform}
-      </span>
-      <span className="username">{username}</span>
-      <a
-        href={links[platform]}
-        target="_blank"
-        rel="noreferrer"
-        className="viewLink"
-      >
-        View →
-      </a>
     </div>
   );
 }

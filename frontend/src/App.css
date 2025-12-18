@@ -1,33 +1,31 @@
-/* TOP-LEVEL APP LAYOUT */
+:root {
+  --navbar-height: 56px;
+  --sidebar-width: 240px;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+/* APP WRAPPER */
 .app {
-  display: flex;
   width: 100vw;
   height: 100vh;
-  background: #ffffff;
   overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f8fafc;
 }
 
-/* MAIN COLUMN (Navbar + Page Content) */
+/* MAIN WRAPPER (beside sidebar) */
 .main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  height: calc(100vh - var(--navbar-height));
+  overflow-y: auto;
 }
 
-/* PAGE CONTENT AREA */
+/* CONTENT */
 .content {
-  flex: 1;
-  width: 100%;
-
-  /* navbar already occupies space */
-  padding: 0;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  /* 🔥 CRITICAL: no flex centering */
-  display: block;
+  padding: 28px 36px;
 }

@@ -1,5 +1,7 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+import Header from "./components/Header";
 import LeftNav from "./components/LeftNav";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -13,14 +15,11 @@ import StudentProfile from "./pages/student/StudentProfile";
 
 // admin pages
 import AdminHome from "./pages/admin/AdminHome";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
-import AdminProfile from "./pages/admin/AdminProfile";
-import AdminLeaderboard from "./pages/admin/AdminLeaderboard";
-import CreateAssessment from "./pages/admin/CreateAssessment";
 import CodingProfiles from "./pages/admin/CodingProfiles";
 
-// auth
-import LoginPage from "./pages/auth/LoginPage";
+import StudentHome from "./pages/student/StudentHome";
+
+import "./App.css";
 
 function App() {
   const [role, setRole] = React.useState(() => {
@@ -31,11 +30,10 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <LeftNav role={role} /> {/* removed collapsed props */}
+        <Header role={role} setRole={setRole} />
+        <LeftNav role={role} />
 
         <div className="main">
-          <Header role={role} setRole={setRole} />
-
           <div className="content">
             <Routes>
               {/* role-based home */}
@@ -120,8 +118,13 @@ function App() {
                 }
               />
 
-              {/* auth */}
-              <Route path="/login" element={<LoginPage />} />
+              {/* STUDENT ROUTES */}
+              {role === "student" && (
+                <>
+                  <Route path="/student/home" element={<StudentHome />} />
+                  <Route path="*" element={<Navigate to="/student/home" />} />
+                </>
+              )}
             </Routes>
 
           </div>
@@ -130,5 +133,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;

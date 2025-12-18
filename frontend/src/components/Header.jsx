@@ -1,7 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 export default function Header({ role, setRole }) {
+  const navigate = useNavigate();
+
+  const handleRoleChange = (e) => {
+    const newRole = e.target.value;
+    setRole(newRole);
+    navigate(newRole === "admin" ? "/admin/home" : "/student/home");
+  };
+
   return (
     <div className="header">
 
@@ -9,7 +18,7 @@ export default function Header({ role, setRole }) {
         <select
           className="role-select"
           value={role}
-          onChange={(e) => setRole(e.target.value)}
+          onChange={handleRoleChange}
         >
           <option value="student">Student</option>
           <option value="admin">Teacher (Admin)</option>
