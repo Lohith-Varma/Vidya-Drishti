@@ -1,6 +1,80 @@
-.student-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-.student-grid { display:flex; gap:18px; }
-.left { flex:2; }
-.right { flex:1; display:flex; flex-direction:column; gap:12px; }
-.two-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
-.small-text { color:#6b7280; font-size:14px; }
+.studentHome {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  padding: 28px 36px;
+}
+
+.studentHeader h1 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.studentHeader p {
+  color: #64748b;
+  margin-bottom: 18px;
+}
+
+.studentStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.statCard {
+  background: white;
+  border: 1px solid #e6edf3;
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.studentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e6edf3;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.placeholder {
+  height: 160px;
+  background: #f8fafc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  margin-top: 12px;
+}
+
+.actionBtn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #e6edf3;
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.actionBtn.primary {
+  background: #4f46e5;
+  color: white;
+  border: none;
+}

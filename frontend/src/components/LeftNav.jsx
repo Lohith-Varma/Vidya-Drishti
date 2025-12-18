@@ -1,70 +1,65 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import LogoImg from "../assets/vidya-drishti-logo.png";
 import {
-  HiOutlineHome,
-  HiOutlineClipboardDocumentList,
-  HiOutlineChartBar,
-  HiOutlineStar,
-  HiOutlineUser,
-} from "react-icons/hi2";
-
+  FiHome,
+  FiBarChart2,
+  FiUsers,
+  FiExternalLink,
+  FiUser,
+  FiAward,
+} from "react-icons/fi";
 import "./LeftNav.css";
 
 export default function LeftNav({ role }) {
-  const { pathname } = useLocation();
+  const location = useLocation();
 
-  const studentLinks = [
-  { to: "/", label: "Home", icon: <HiOutlineHome /> },
-  { to: "/student/assessments", label: "Assessments", icon: <HiOutlineClipboardDocumentList /> },
-  { to: "/student/leaderboard", label: "Leaderboard", icon: <HiOutlineStar /> },
-  { to: "/student/profile", label: "Profile", icon: <HiOutlineUser /> },
-];
+  const adminMenu = [
+    { label: "Home", path: "/admin/home", icon: <FiHome /> },
+    { label: "Analytics", path: "/admin/analytics", icon: <FiBarChart2 /> },
+    { label: "Leader Board", path: "/admin/leaderboard", icon: <FiUsers /> },
+    { label: "Coding Profiles", path: "/admin/coding-profiles", icon: <FiExternalLink /> },
+  ];
 
-const adminLinks = [
-  { to: "/", label: "Home", icon: <HiOutlineHome /> },
-  { to: "/admin/create", label: "Create Assessment", icon: <HiOutlineClipboardDocumentList /> },
-  { to: "/admin/analytics", label: "Analytics", icon: <HiOutlineChartBar /> },
-  { to: "/admin/leaderboard", label: "Leader Board", icon: <HiOutlineStar /> },
-  { to: "/admin/profile", label: "Profile", icon: <HiOutlineUser /> },
-];
+  const studentMenu = [
+    { label: "Home", path: "/student/home", icon: <FiHome /> },
+    { label: "My Analytics", path: "/student/analytics", icon: <FiBarChart2 /> },
+    { label: "Leaderboard", path: "/student/leaderboard", icon: <FiAward /> },
+    { label: "Coding Profiles", path: "/student/coding-profiles", icon: <FiExternalLink /> },
+  ];
 
+  const account = [
+    { label: "Profile", path: "/profile", icon: <FiUser /> },
+  ];
 
-  const links = role === "admin" ? adminLinks : studentLinks;
+  const menu = role === "admin" ? adminMenu : studentMenu;
 
   return (
-    <aside className="leftnav">
-      {/* Top: Logo */}
-      <div className="leftnav-top">
-        <div className="logo">
-          <img src={LogoImg} alt="Vidya Drishti Logo" />
-        </div>
-      </div>
+    <nav className="leftNav">
+      <div className="menuWrapper">
+        <div className="sectionLabel">Main</div>
+        {menu.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            className={`navItem ${location.pathname === item.path ? "active" : ""}`}
+          >
+            <span className="icon">{item.icon}</span>
+            <span className="label">{item.label}</span>
+          </Link>
+        ))}
 
-      {/* Scrollable sidebar menu */}
-      <div className="leftnav-scroll">
-       <nav className="nav">
-          {links.map((link) => (
-            <Link key={link.to} to={link.to} className="nav-link">
-              <span className="nav-icon">{link.icon}</span>
-              <span className="nav-label">{link.label}</span>
-            </Link>
-          ))}
-        </nav>
+        <div className="sectionLabel">Account</div>
+        {account.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            className="navItem"
+          >
+            <span className="icon">{item.icon}</span>
+            <span className="label">{item.label}</span>
+          </Link>
+        ))}
       </div>
-
-      {/* Bottom: Profile */}
-      <div className="leftnav-bottom">
-        <img
-          src="https://api.dicebear.com/6.x/identicon/svg?seed=Vidya"
-          alt="avatar"
-          className="avatar"
-        />
-        <div>
-          <div className="profile-name">Prof. V S R Murthy</div>
-          <div className="profile-email">vsrmurthy@nsrit.edu.in</div>
-        </div>
-      </div>
-    </aside>
+    </nav>
   );
 }

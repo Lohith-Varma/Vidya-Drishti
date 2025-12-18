@@ -1,42 +1,56 @@
 import React from "react";
 import "./AdminHome.css";
-import Card from "../../components/Card";
 
 export default function AdminHome() {
   return (
-    <div className="admin-home">
-      <div className="admin-header">
-        <h2>Welcome back, Prof. V S R Murthy</h2>
-        <div className="meta small-text">CSE Dept • NSRIT</div>
+    <div className="adminHome">
+      {/* HEADER */}
+      <div className="pageHeader">
+        <h1>Welcome back, Prof. V S R Murthy 👋</h1>
+        <p>CSE Dept • NSRIT</p>
       </div>
 
-      <div className="admin-grid">
-        <div className="admin-left">
-          <div className="two-cards">
-            <Card title="Active Assessments">3 ongoing</Card>
-            <Card title="Average Class Score">71%</Card>
-          </div>
+      {/* STATS */}
+      <div className="statsRow">
+        <StatCard title="Active Assessments" value="3 ongoing" />
+        <StatCard title="Average Class Score" value="71%" />
+        <StatCard title="Create Assessment" value="Quick link to create test" />
+      </div>
 
-          <div className="card submissions">
-            <h3>Recent submissions summary</h3>
-            <table className="table">
-              <thead>
-                <tr><th>Name</th><th>Assessment</th><th>Score</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Lohith</td><td>Weekly: Graphs</td><td>82</td></tr>
-                <tr><td>Siddhartha</td><td>Mock: DP</td><td>68</td></tr>
-                <tr><td>Gnana Deep</td><td>College Test</td><td>91</td></tr>
-              </tbody>
-            </table>
-          </div>
+      {/* GRID */}
+      <div className="grid">
+        <div className="card large">
+          <h3>Recent Submissions</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Assessment</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Lohith</td><td>Weekly: Graphs</td><td>82</td></tr>
+              <tr><td>Siddhartha</td><td>Mock: DP</td><td>68</td></tr>
+              <tr><td>Gnana Deep</td><td>College Test</td><td>91</td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="admin-right">
-          <Card title="Create Assessment">Quick link to create a new timed test</Card>
-          <Card title="Top Students">Vikram • Rohit • Anita</Card>
+        <div className="card">
+          <h3>Top Students</h3>
+          <p>Vikram • Rohit • Anita</p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function StatCard({ title, value }) {
+  return (
+    <div className="statCard">
+      <span>{title}</span>
+      <strong>{value}</strong>
     </div>
   );
 }
