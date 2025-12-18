@@ -6,26 +6,39 @@ import {
   FiBarChart2,
   FiUsers,
   FiUser,
-  FiExternalLink
+  FiExternalLink,
+  FiBookOpen,
 } from "react-icons/fi";
 import "./LeftNav.css";
 
-export default function LeftNav() {
+export default function LeftNav({ role }) {
   const location = useLocation();
 
-  const menu = [
+  // ADMIN MENUS
+  const adminMain = [
     { label: "Home", path: "/admin/home", icon: <FiHome /> },
-    { label: "Create Assessment", path: "/admin/create-assessment", icon: <FiPlusCircle /> },
+    { label: "Create Assessment", path: "/admin/create", icon: <FiPlusCircle /> },
     { label: "Analytics", path: "/admin/analytics", icon: <FiBarChart2 /> },
-    { label: "Leader Board", path: "/admin/leaderboard", icon: <FiUsers /> },
+    { label: "Leaderboard", path: "/admin/leaderboard", icon: <FiUsers /> },
   ];
 
-  const studentTools = [
+  const adminTools = [
     { label: "Coding Profiles", path: "/admin/coding-profiles", icon: <FiExternalLink /> },
   ];
 
-  const account = [
+  const adminAccount = [
     { label: "Profile", path: "/admin/profile", icon: <FiUser /> },
+  ];
+
+  // STUDENT MENUS
+  const studentMain = [
+    { label: "Home", path: "/", icon: <FiHome /> },
+    { label: "Assessments", path: "/student/assessments", icon: <FiBookOpen /> },
+    { label: "Leaderboard", path: "/student/leaderboard", icon: <FiUsers /> },
+  ];
+
+  const studentAccount = [
+    { label: "Profile", path: "/student/profile", icon: <FiUser /> },
   ];
 
   const renderSection = (title, items) => (
@@ -47,9 +60,20 @@ export default function LeftNav() {
   return (
     <nav className="leftNav" aria-label="Main navigation">
       <div className="menuWrapper">
-        {renderSection("Main", menu)}
-        {renderSection("Student Tools", studentTools)}
-        {renderSection("Account", account)}
+        {role === "admin" && (
+          <>
+            {renderSection("Main", adminMain)}
+            {renderSection("Student Tools", adminTools)}
+            {renderSection("Account", adminAccount)}
+          </>
+        )}
+
+        {role === "student" && (
+          <>
+            {renderSection("Main", studentMain)}
+            {renderSection("Account", studentAccount)}
+          </>
+        )}
       </div>
     </nav>
   );

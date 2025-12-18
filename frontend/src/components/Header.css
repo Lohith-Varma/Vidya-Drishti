@@ -16,12 +16,39 @@
   z-index: 100;
 }
 
-.role-select {
+/* .role-select {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #e6e7eb;
-}
+} */
+ 
 .header-right {
   color: #374151;
   font-size: 14px;
+}
+
+.role-switch {
+  display: flex;
+  gap: 8px;
+}
+
+.role-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-btn:hover {
+  background-color: #f2f2f2;
+}
+
+.role-btn.active {
+  background-color: #2563eb; /* blue */
+  color: #ffffff;
+  border-color: #2563eb;
 }

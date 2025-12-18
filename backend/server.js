@@ -14,6 +14,9 @@ const hackerrankRoutes = require("./routes/hackerrank");
 app.use("/api/leetcode", leetcodeRoutes);
 app.use("/api/hackerrank", hackerrankRoutes);
 
+const studentRoutes = require("./src/routes/student.routes");
+app.use("/api/student", studentRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);

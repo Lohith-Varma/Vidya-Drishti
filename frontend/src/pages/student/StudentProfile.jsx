@@ -1,51 +1,37 @@
-// import React from "react";
-// import "./StudentProfile.css";
-
-// // 👇 add these imports (adjust the path if your structure is different)
-// import LeetCodeStatsCard from "../../components/LeetCodeStatsCard";
-// import HackerRankBadges from "../../components/HackerRankBadges";
-
-// export default function StudentProfile() {
-//   const leetcodeUsername = "some_username"; // later pull from DB / student profile
-//   const hackerrankUsername = "hr_username";
-
-//   return (
-//     <div className="student-profile">
-//       <h3>Profile</h3>
-//       <div className="small-text">
-//         Edit profile, link handles (LeetCode/CF/GitHub), upload resume
-//       </div>
-
-//       {/* you don't need LeetCodeStatsCard twice, so let's keep one section */}
-//       <div className="profile-stats-grid">
-//         <LeetCodeStatsCard username={leetcodeUsername} />
-//         <HackerRankBadges username={hackerrankUsername} />
-//       </div>
-//     </div>
-//   );
-// }
-
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./StudentProfile.css";
 
 import LeetCodeStatsCard from "../../components/LeetCodeStatsCard";
-import HackerRankBadges from "../../components/HackerRankStatsCard";
+import HackerRankStatsCard from "../../components/HackerRankStatsCard";
+import { getStudentProfile } from "../../api/student.api";
 
 export default function StudentProfile() {
-  const leetcodeUsername = "some_username";   // later from DB
-  const hackerrankUsername = "hr_username";
+  const [student, setStudent] = useState(null);
+  const [error, setError] = useState("");
+
+  // TEMP: later this will come from logged-in user
+  const email = "lohith@gmail.com";
+
+  useEffect(() => {
+    getStudentProfile(email)
+      .then(setStudent)
+      .catch(() => setError("Failed to load profile"));
+  }, []);
+
+  if (error) return <p className="error">{error}</p>;
+  if (!student) return <p>Loading profile...</p>;
 
   return (
     <div className="student-profile">
-      <h3>Profile</h3>
+      <h3>{student.fullName}</h3>
+
       <div className="small-text">
         Edit profile, link handles (LeetCode/CF/GitHub), upload resume
       </div>
 
       <div className="profile-stats-grid">
-        <LeetCodeStatsCard username={leetcodeUsername} />
-        <HackerRankBadges username={hackerrankUsername} />
+        <LeetCodeStatsCard username={student.leetcodeUsername} />
+        <HackerRankStatsCard username={student.hackerrankUsername} />
       </div>
     </div>
   );
