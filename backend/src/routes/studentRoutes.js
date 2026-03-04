@@ -20,3 +20,18 @@ router.get("/:email", async (req, res) => {
 
 
 module.exports = router;
+
+
+router.get(
+  "/profile",
+  authenticate,
+  authorize("STUDENT"),
+  async (req, res) => {
+
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id }
+    });
+
+    res.json(user);
+  }
+);

@@ -12,7 +12,6 @@ import {
 import "./LeftNav.css";
 
 export default function LeftNav({ role }) {
-export default function LeftNav({ role }) {
   const location = useLocation();
 
   // ADMIN MENUS
