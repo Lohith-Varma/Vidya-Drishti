@@ -7,41 +7,170 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student {
-  id                 Int      @id @default(autoincrement())
-  fullName           String
-  email              String   @unique
-  leetcodeUsername   String?
-  hackerrankUsername String?
-  createdAt          DateTime @default(now())
+model User {
+  id               String   @id @default(cuid())
+  email            String   @unique
+  password         String
+  name             String
+  role             Role     @default(STUDENT)
+
+  // Student-specific
+  rollNumber       String?  @unique
+  department       String?
+  year             String?
+  phone            String?
+  bio              String?
+  avatar           String?
+
+  // Admin-specific
+  employeeId       String?  @unique
+
+  // Coding handles
+  leetcodeHandle   String?
+  hackerrankHandle String?
+  githubHandle     String?
+  codeforcesHandle String?
+
+  // External links
+  linkedinUrl      String?
+  resumeUrl        String?
+  portfolioUrl     String?
+
+  // Cached stats (updated by cron / on-demand)
+  totalSolved      Int      @default(0)
+  easySolved       Int      @default(0)
+  mediumSolved     Int      @default(0)
+  hardSolved       Int      @default(0)
+  leetcodeRank     Int?
+  contestRating    Float?
+  streak           Int      @default(0)
+  testsCompleted   Int      @default(0)
+  avgScore         Float    @default(0)
+  totalScore       Int      @default(0)
+  rank             Int?
+
+  collegeId        String?
+  college          College?     @relation(fields: [collegeId], references: [id])
+
+  submissions      Submission[]
+  createdTests     Assessment[] @relation("CreatedBy")
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("users")
 }
 
+model College {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique
+  address   String?
+  users     User[]
+  createdAt DateTime @default(now())
 
-
-
-
-generator client {
-  provider = "prisma-client-js"
+  @@map("colleges")
 }
 
-datasource db {
-  provider = "postgresql" // or "mysql" depending on your setup
-  url      = env("DATABASE_URL")
+model Assessment {
+  id            String       @id @default(cuid())
+  title         String
+  subject       String?
+  description   String?
+  duration      Int
+  maxScore      Int          @default(0)
+  startDate     DateTime
+  endDate       DateTime
+  language      String       @default("multiple")
+  proctored     Boolean      @default(false)
+  status        TestStatus   @default(DRAFT)
+
+  createdById   String
+  createdBy     User         @relation("CreatedBy", fields: [createdById], references: [id])
+
+  questions     Question[]
+  submissions   Submission[]
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("assessments")
 }
 
-// ==========================================
-// ENUMS (Standardized Values)
-// ==========================================
+model Question {
+  id           String      @id @default(cuid())
+  title        String
+  description  String
+  difficulty   Difficulty  @default(MEDIUM)
+  marks        Int         @default(10)
+  timeLimit    Int         @default(1000)
+  memoryLimit  Int         @default(256)
+  constraints  String?
+  order        Int         @default(0)
+
+  assessmentId String
+  assessment   Assessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  testCases    TestCase[]
+  submissions  Submission[] @relation("QuestionSubmissions")
+
+  @@map("questions")
+}
+
+model TestCase {
+  id         String   @id @default(cuid())
+  input      String   @default("")
+  output     String   @default("")
+  hidden     Boolean  @default(false)
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("test_cases")
+}
+
+model Submission {
+  id           String             @id @default(cuid())
+  code         String
+  language     String
+  verdict      Verdict            @default(PENDING)
+  score        Int                @default(0)
+  executionTime Float?
+  memoryUsed   Float?
+
+  studentId    String
+  student      User               @relation(fields: [studentId], references: [id])
+
+  assessmentId String
+  assessment   Assessment         @relation(fields: [assessmentId], references: [id])
+
+  questionId   String?
+  question     Question?          @relation("QuestionSubmissions", fields: [questionId], references: [id])
+
+  results      SubmissionResult[]
+  submittedAt  DateTime           @default(now())
+
+  @@map("submissions")
+}
+
+model SubmissionResult {
+  id           String     @id @default(cuid())
+  passed       Boolean
+  input        String?
+  expected     String?
+  actual       String?
+  time         Float?
+  hidden       Boolean    @default(false)
+
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@map("submission_results")
+}
 
 enum Role {
-  PLATFORM_ADMIN
-  COLLEGE_ADMIN
   STUDENT
-}
-
-enum QuestionType {
-  CODING
-  MCQ
+  ADMIN
 }
 
 enum Difficulty {
@@ -50,174 +179,18 @@ enum Difficulty {
   HARD
 }
 
-enum AssessmentStatus {
+enum TestStatus {
   DRAFT
   PUBLISHED
-  CLOSED
+  ENDED
 }
 
-enum AttemptStatus {
-  IN_PROGRESS
-  SUBMITTED
-  EVALUATED
-}
-
-// ==========================================
-// CORE TABLES (Multi-Tenancy & Users)
-// ==========================================
-
-model College {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  domain      String?  @unique // Useful for auto-assigning students via email
-  location    String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  users       User[]
-  assessments Assessment[]
-
-  @@index([name])
-}
-
-model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  passwordHash String   // Store bcrypt/argon2 hashes, never plain text
-  firstName    String
-  lastName     String
-  role         Role     @default(STUDENT)
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  // Relations
-  collegeId    String?  // Nullable because Platform Admin doesn't need a college
-  college      College? @relation(fields: [collegeId], references: [id], onDelete: Restrict)
-  
-  externalStats ExternalStat?
-  createdAssessments Assessment[] @relation("AssessmentCreator")
-  attempts           Attempt[]
-
-  @@index([email])
-  @@index([collegeId])
-}
-
-// ==========================================
-// EXTERNAL INTEGRATIONS (LeetCode/HackerRank)
-// ==========================================
-
-model ExternalStat {
-  id                 String   @id @default(uuid())
-  userId             String   @unique
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  leetcodeUsername   String?
-  leetcodeSolved     Int      @default(0)
-  
-  hackerrankUsername String?
-  hackerrankScore    Float    @default(0)
-  
-  lastSyncedAt       DateTime @default(now())
-
-  @@index([userId])
-}
-
-// ==========================================
-// ASSESSMENT & QUESTIONS
-// ==========================================
-
-model Assessment {
-  id              String           @id @default(uuid())
-  title           String
-  description     String?
-  status          AssessmentStatus @default(DRAFT)
-  startTime       DateTime?
-  endTime         DateTime?
-  durationMinutes Int              @default(120)
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-
-  // Relations
-  collegeId       String   // Ensures exams are isolated to specific colleges
-  college         College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-  
-  creatorId       String
-  creator         User     @relation("AssessmentCreator", fields: [creatorId], references: [id])
-  
-  questions       Question[]
-  attempts        Attempt[]
-
-  @@index([collegeId])
-  @@index([status])
-}
-
-model Question {
-  id           String       @id @default(uuid())
-  title        String
-  problemText  String       @db.Text // Can store Markdown or HTML
-  type         QuestionType @default(CODING)
-  difficulty   Difficulty   @default(MEDIUM)
-  marks        Float        @default(10.0)
-  
-  // For coding questions
-  sampleInput  String?      @db.Text
-  sampleOutput String?      @db.Text
-  testCases    Json?        // Store an array of hidden test cases [{input: "", output: "", hidden: true}]
-
-  // Relations
-  assessmentId String
-  assessment   Assessment   @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  
-  submissions  Submission[]
-
-  @@index([assessmentId])
-}
-
-// ==========================================
-// STUDENT SUBMISSIONS & RESULTS
-// ==========================================
-
-model Attempt {
-  id           String        @id @default(uuid())
-  status       AttemptStatus @default(IN_PROGRESS)
-  startedAt    DateTime      @default(now())
-  submittedAt  DateTime?
-  totalScore   Float         @default(0)
-
-  // Relations
-  userId       String
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  assessmentId String
-  assessment   Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  
-  submissions  Submission[]
-
-  @@unique([userId, assessmentId]) // A user can generally only attempt an assessment once
-  @@index([userId])
-  @@index([assessmentId])
-}
-
-model Submission {
-  id            String   @id @default(uuid())
-  code          String?  @db.Text // The actual code the student wrote
-  language      String?  // e.g., "javascript", "python", "cpp"
-  isCorrect     Boolean  @default(false)
-  marksObtained Float    @default(0)
-  executionTime Float?   // ms
-  memoryUsed    Float?   // MB
-  submittedAt   DateTime @default(now())
-
-  // Relations
-  attemptId     String
-  attempt       Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-  
-  questionId    String
-  question      Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  @@unique([attemptId, questionId]) // One submission record per question per attempt
-  @@index([attemptId])
+enum Verdict {
+  PENDING
+  AC
+  WA
+  TLE
+  MLE
+  RE
+  CE
 }

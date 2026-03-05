@@ -1,37 +1,20 @@
-const express = require("express");
-const prisma = require("../prismaClient");
+const express = require('express')
+const router = express.Router()
+const studentController = require('../controllers/studentController')
+const adminController = require('../controllers/adminController')
+const authMiddleware = require('../middleware/authMiddleware')
+const roleMiddleware = require('../middleware/roleMiddleware')
 
-const router = express.Router();
+// All routes require authentication
+router.use(authMiddleware)
 
-router.get("/:email", async (req, res) => {
-  const { email } = req.params;
-  console.log("EMAIL PARAM:", req.params.email);
+// Student/Admin shared routes
+router.get('/search',           studentController.searchStudents)
+router.get('/leaderboard',      studentController.getLeaderboard)
+router.get('/',                 roleMiddleware('admin'), studentController.getAllStudents)
+router.get('/:id',              studentController.getStudentById)
+router.get('/:id/stats',        studentController.getStudentStats)
+router.get('/:id/submissions',  studentController.getStudentSubmissions)
+router.put('/:id',              studentController.updateStudent)
 
-  const student = await prisma.student.findUnique({
-    where: { email },
-  });
-
-  if (!student) {
-    return res.status(404).json({ message: "Student not found" });
-  }
-
-  res.json(student);
-});
-
-
-module.exports = router;
-
-
-router.get(
-  "/profile",
-  authenticate,
-  authorize("STUDENT"),
-  async (req, res) => {
-
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.id }
-    });
-
-    res.json(user);
-  }
-);
+module.exports = router
