@@ -1,69 +1,108 @@
-import React, { useEffect, useState } from "react";
-import "./AdminHome.css";
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../../App'
+import { getAllStudents } from '../../api/student.api'
+import { getAllTests } from '../../api/test.api'
+import StatCard from '../../components/StatCard'
+import SectionCard from '../../components/SectionCard'
+import Table from '../../components/Table'
+import './AdminHome.css'
 
 export default function AdminHome() {
-  const [stats, setStats] = useState({
-    activeTests: 3,
-    avgScore: 71,
-    submissionsToday: 42,
-    topStudent: "Gnana Deep"
-  });
+  const { user } = useAuth()
+  const [students, setStudents] = useState([])
+  const [tests, setTests] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const [submissions, setSubmissions] = useState([
-    { name: "Lohith", assessment: "Weekly: Graphs", score: 82 },
-    { name: "Siddhartha", assessment: "Mock: DP", score: 68 },
-    { name: "Gnana Deep", assessment: "College Test", score: 91 }
-  ]);
+  useEffect(() => {
+    Promise.all([getAllStudents(), getAllTests()])
+      .then(([s, t]) => { setStudents(s.data || []); setTests(t.data || []) })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  const activeTests = tests.filter(t => new Date(t.endDate) > new Date() && new Date(t.startDate) <= new Date())
+  const avgScore = students.length ? Math.round(students.reduce((a, s) => a + (s.avgScore || 0), 0) / students.length) : 0
+  const topStudents = [...students].sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0)).slice(0, 5)
+
+  const recentActivities = [
+    { dot: 'var(--success)', text: <><strong>Priya Sharma</strong> submitted <strong>Data Structures Test</strong></>, time: '2 minutes ago' },
+    { dot: 'var(--accent)', text: <><strong>Rahul Gupta</strong> linked LeetCode profile</>, time: '15 minutes ago' },
+    { dot: 'var(--warning)', text: <><strong>Array Assessment</strong> started — 42 students online</>, time: '1 hour ago' },
+    { dot: 'var(--primary-light)', text: <><strong>Sneha Rao</strong> reached rank #1 in leaderboard</>, time: '3 hours ago' },
+    { dot: 'var(--error)', text: <><strong>5 students</strong> missed the OOP test deadline</>, time: '5 hours ago' },
+  ]
+
+  const topStudentCols = [
+    { key: 'rank', label: '#', width: '48px', render: (_, __, idx) => <span style={{ color: 'var(--text-3)', fontWeight: 700 }}>{idx + 1}</span> },
+    {
+      key: 'name', label: 'Student',
+      render: (name, row) => (
+        <div className="table-user">
+          <div className="table-avatar">{name?.slice(0,2).toUpperCase()}</div>
+          <div><div className="table-user-name">{name}</div><div className="table-user-sub">{row.rollNumber}</div></div>
+        </div>
+      )
+    },
+    { key: 'totalSolved', label: 'Solved', render: v => <strong style={{ color: 'var(--text-1)' }}>{v}</strong> },
+    { key: 'avgScore', label: 'Avg Score', render: v => <span className={v >= 70 ? 'text-success' : 'text-warning'}>{v}%</span> },
+    { key: 'totalScore', label: 'Points', render: v => <strong style={{ color: 'var(--primary-light)' }}>{v}</strong> },
+  ]
 
   return (
-    <div className="adminHome">
-      {/* HEADER */}
-      <div className="pageHeader">
-        <h1>Welcome back, Prof. V S R Murthy 👋</h1>
-        <p>CSE Dept • NSRIT</p>
-      </div>
-
-      {/* STATS */}
-      <div className="statsRow">
-        <StatCard title="Active Assessments" value="3 ongoing" />
-        <StatCard title="Average Class Score" value="71%" />
-        <StatCard title="Create Assessment" value="Quick link to create test" />
-      </div>
-
-      {/* GRID */}
-      <div className="grid">
-        <div className="card large">
-          <h3>Recent Submissions</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Assessment</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>Lohith</td><td>Weekly: Graphs</td><td>82</td></tr>
-              <tr><td>Siddhartha</td><td>Mock: DP</td><td>68</td></tr>
-              <tr><td>Gnana Deep</td><td>College Test</td><td>91</td></tr>
-            </tbody>
-          </table>
+    <div>
+      <div className="admin-welcome">
+        <div>
+          <h2>Welcome back, {user?.name?.split(' ')[0]} 👨‍💼</h2>
+          <p>Here's what's happening in your department today</p>
         </div>
-
-        <div className="card">
-          <h3>Top Students</h3>
-          <p>Vikram • Rohit • Anita</p>
+        <div className="admin-quick-actions">
+          <Link to="/admin/create-assessment" className="btn btn-primary">+ Create Assessment</Link>
+          <Link to="/admin/analytics" className="btn btn-secondary">📊 View Analytics</Link>
         </div>
       </div>
-    </div>
-  );
-}
 
-function StatCard({ title, value }) {
-  return (
-    <div className="statCard">
-      <span>{title}</span>
-      <strong>{value}</strong>
+      <div className="grid-4">
+        <StatCard label="Total Students" value={loading ? '...' : students.length} trend={8}
+          accentColor="#6366f1" iconBg="rgba(99,102,241,0.1)" iconColor="#818cf8"
+          icon={<svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+        />
+        <StatCard label="Tests Created" value={loading ? '...' : tests.length} trend={3}
+          accentColor="#0ea5e9" iconBg="rgba(14,165,233,0.1)" iconColor="#0ea5e9"
+          icon={<svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg>}
+        />
+        <StatCard label="Active Tests" value={loading ? '...' : activeTests.length}
+          accentColor="#ef4444" iconBg="rgba(239,68,68,0.1)" iconColor="#ef4444"
+          icon={<svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>}
+          sub="Ongoing right now"
+        />
+        <StatCard label="Dept Avg Score" value={loading ? '...' : `${avgScore}%`} trend={-2}
+          accentColor="#22c55e" iconBg="rgba(34,197,94,0.1)" iconColor="#22c55e"
+          icon={<svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>}
+        />
+      </div>
+
+      <div className="admin-grid">
+        <SectionCard title="Top Performers" icon={<span>🏆</span>}
+          actions={<Link to="/admin/leaderboard" className="btn btn-secondary btn-sm">Full Leaderboard</Link>}
+          noPadding>
+          <Table columns={topStudentCols} data={topStudents} loading={loading} pageSize={5} />
+        </SectionCard>
+
+        <SectionCard title="Recent Activity" icon={<span>🔔</span>}>
+          <div className="recent-activity-list">
+            {recentActivities.map((a, i) => (
+              <div key={i} className="activity-item">
+                <div className="activity-dot" style={{ background: a.dot }} />
+                <div>
+                  <div className="activity-text">{a.text}</div>
+                  <div className="activity-time">{a.time}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      </div>
     </div>
-  );
+  )
 }

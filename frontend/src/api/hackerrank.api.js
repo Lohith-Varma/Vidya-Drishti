@@ -1,6 +1,7 @@
-import api from "./axiosConfig";
+import api from './axiosConfig'
 
-export const getHackerRankStats = async (username) => {
-  const res = await api.get(`/hackerrank/${username}`);
-  return res.data;
-};
+export const getHackerRankStats = (username) =>
+  api.get(`/integrations/hackerrank/${username}`)
+
+export const refreshHackerRankStats = (username) =>
+  api.post(`/integrations/hackerrank/${username}/refresh`)

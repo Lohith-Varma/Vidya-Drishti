@@ -1,88 +1,110 @@
-import React, { useState } from "react";
-import { FiChevronDown, FiChevronRight, FiExternalLink } from "react-icons/fi";
-import "./CodingProfiles.css";
-
-const students = [
-  {
-    name: "Lohith Varma",
-    roll: "23NU1A0517",
-    profiles: {
-      LeetCode: "https://leetcode.com/u/dklohithvarma",
-      Codeforces: "https://codeforces.com/profile/lohith",
-      CodeChef: "https://www.codechef.com/users/lohithvarma",
-      HackerRank: "https://www.hackerrank.com/lohith_varma",
-      GitHub: "https://github.com/Lohith-Varma/",
-      LinkedIn: "https://www.linkedin.com/in/LohtihVarma/",
-    },
-  },
-  {
-    name: "Siddhartha",
-    roll: "21CSE087",
-    profiles: {
-      LeetCode: "https://leetcode.com/u/msvssiddhartha",
-      Codeforces: "https://codeforces.com/profile/sid_cf",
-      CodeChef: "https://www.codechef.com/users/sid_cc",
-      HackerRank: "https://www.hackerrank.com/sid_hr",
-      GitHub: "https://github.com/siddu0426",
-      LinkedIn: "https://www.linkedin.com/in/siddhartha-mylavarapu/",
-    },
-  },
-];
+import { useState, useEffect } from 'react'
+import { getAllStudents } from '../../api/student.api'
+import './CodingProfiles.css'
 
 export default function CodingProfiles() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [students, setStudents] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [filterLinked, setFilterLinked] = useState('all')
 
-  const toggleStudent = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  useEffect(() => {
+    getAllStudents()
+      .then(res => setStudents(res.data || []))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  const filtered = students.filter(s => {
+    const matchSearch = s.name?.toLowerCase().includes(search.toLowerCase()) || s.rollNumber?.toLowerCase().includes(search.toLowerCase())
+    const matchFilter =
+      filterLinked === 'all' ? true :
+      filterLinked === 'leetcode' ? !!s.leetcodeHandle :
+      filterLinked === 'hackerrank' ? !!s.hackerrankHandle :
+      filterLinked === 'none' ? (!s.leetcodeHandle && !s.hackerrankHandle) : true
+    return matchSearch && matchFilter
+  })
+
+  if (loading) return <div className="center-loader"><div className="loading-spinner" /></div>
 
   return (
-    <div className="codingProfiles">
-      <h1>Coding Profiles</h1>
-      <p className="subtitle">
-        View student competitive programming and professional profiles
-      </p>
-
-      <div className="studentList">
-        {students.map((student, index) => {
-          const isOpen = openIndex === index;
-
-          return (
-            <div key={student.roll} className="studentBlock">
-              {/* STUDENT HEADER */}
-              <button
-                className="studentHeader"
-                onClick={() => toggleStudent(index)}
-              >
-                <div>
-                  <h3>{student.name}</h3>
-                  <span>{student.roll}</span>
-                </div>
-
-                {isOpen ? <FiChevronDown /> : <FiChevronRight />}
-              </button>
-
-              {/* PROFILES */}
-              {isOpen && (
-                <div className="profiles">
-                  {Object.entries(student.profiles).map(
-                    ([platform, link]) => (
-                      <button
-                        key={platform}
-                        className={`profileRow ${platform.toLowerCase()}`}
-                        onClick={() => window.open(link, "_blank")}
-                      >
-                        <span>{platform}</span>
-                        <FiExternalLink />
-                      </button>
-                    )
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
+    <div>
+      <div className="page-header">
+        <div>
+          <div className="page-title">Student Coding Profiles</div>
+          <div className="page-subtitle">View linked LeetCode, HackerRank & GitHub accounts</div>
+        </div>
+        <div style={{ display: 'flex', gap: 10, fontSize: 13, color: 'var(--text-2)', alignItems: 'center' }}>
+          <span>🟡 LeetCode: {students.filter(s => s.leetcodeHandle).length}</span>
+          <span>🟢 HackerRank: {students.filter(s => s.hackerrankHandle).length}</span>
+          <span>⚫ GitHub: {students.filter(s => s.githubHandle).length}</span>
+        </div>
       </div>
+
+      <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+        <div className="lb-search" style={{ flex: 1, minWidth: 220 }}>
+          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input placeholder="Search students..." value={search} onChange={e => setSearch(e.target.value)}
+            style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text-1)', fontSize: 13, width: '100%' }} />
+        </div>
+        <div className="filter-tabs">
+          {[{ k: 'all', l: 'All' }, { k: 'leetcode', l: '🟡 LeetCode' }, { k: 'hackerrank', l: '🟢 HackerRank' }, { k: 'none', l: '❌ Not Linked' }].map(f => (
+            <button key={f.k} className={`filter-tab${filterLinked === f.k ? ' active' : ''}`} onClick={() => setFilterLinked(f.k)}>{f.l}</button>
+          ))}
+        </div>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="empty-state"><div className="empty-icon">🔍</div><h3>No students found</h3></div>
+      ) : (
+        <div className="profiles-grid">
+          {filtered.map(student => {
+            const initials = student.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+            return (
+              <div key={student.id} className="profile-student-card">
+                <div className="profile-card-top">
+                  <div className="table-avatar" style={{ width: 44, height: 44, fontSize: 15, flexShrink: 0 }}>{initials}</div>
+                  <div className="profile-card-info">
+                    <div className="profile-card-name">{student.name}</div>
+                    <div className="profile-card-roll">{student.rollNumber} · {student.department}</div>
+                  </div>
+                  <span className={`badge ${student.avgScore >= 70 ? 'badge-success' : 'badge-warning'}`}>
+                    {student.avgScore >= 70 ? 'Ready' : 'In Prog.'}
+                  </span>
+                </div>
+
+                <div className="profile-card-handles">
+                  {[
+                    { key: 'leetcodeHandle', label: '🟡 LeetCode', base: 'https://leetcode.com/' },
+                    { key: 'hackerrankHandle', label: '🟢 HackerRank', base: 'https://hackerrank.com/' },
+                    { key: 'githubHandle', label: '⚫ GitHub', base: 'https://github.com/' },
+                  ].map(h => (
+                    <div key={h.key} className="profile-handle-row">
+                      <span className="profile-handle-platform">{h.label}</span>
+                      {student[h.key]
+                        ? <a href={`${h.base}${student[h.key]}`} target="_blank" rel="noreferrer" className="profile-handle-link">@{student[h.key]}</a>
+                        : <span className="profile-handle-missing">not linked</span>}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="profile-card-scores">
+                  {[
+                    { lbl: 'Solved', val: student.totalSolved || 0 },
+                    { lbl: 'Avg Score', val: `${student.avgScore || 0}%` },
+                    { lbl: 'Tests', val: student.testsCompleted || 0 },
+                  ].map(s => (
+                    <div key={s.lbl} className="profile-score-box">
+                      <div className="profile-score-val">{s.val}</div>
+                      <div className="profile-score-lbl">{s.lbl}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
-  );
+  )
 }

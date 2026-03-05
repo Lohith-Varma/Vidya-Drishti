@@ -1,2 +1,44 @@
-.assessment-detail { max-width:900px; }
-.small-text { color:#6b7280; font-size:14px; }
+.assessment-detail-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+.question-nav { display: flex; flex-direction: column; gap: 0; position: sticky; top: calc(var(--header-height) + 20px); }
+
+.question-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.15s;
+  background: none;
+  font-size: 13px; color: var(--text-2); text-align: left; border-left: 3px solid transparent;
+}
+.question-nav-item:hover { background: var(--bg-card-hover); }
+.question-nav-item.active { background: var(--primary-glow); color: var(--primary-light); border-left-color: var(--primary); }
+.question-nav-item.solved { border-left-color: var(--success); }
+.question-nav-item.attempted { border-left-color: var(--warning); }
+
+.qn-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.qn-status-dot.solved { background: var(--success); }
+.qn-status-dot.attempted { background: var(--warning); }
+.qn-status-dot.active { background: var(--primary); }
+
+.detail-meta-bar {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 14px 18px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  margin-bottom: 16px; font-size: 13px; color: var(--text-2);
+}
+
+.countdown-timer { font-size: 20px; font-weight: 800; color: var(--primary-light); font-family: monospace; }
+.countdown-timer.warning { color: var(--warning); animation: pulse 1s infinite; }
+.countdown-timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.submission-results { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.test-case-result {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  font-size: 13px; background: var(--bg-main); border: 1px solid var(--border);
+}
+.test-case-result.pass { border-color: var(--success); background: var(--success-bg); }
+.test-case-result.fail { border-color: var(--error); background: var(--error-bg); }
+
+@media (max-width: 1100px) { .assessment-detail-layout { grid-template-columns: 1fr; } .question-nav { position: static; } }

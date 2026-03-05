@@ -1,108 +1,23 @@
-.codingProfiles {
-  max-width: 900px;
-  color: black;
+.profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 20px; }
+
+.profile-student-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 20px;
+  display: flex; flex-direction: column; gap: 14px;
+  transition: all 0.2s;
 }
-
-/* TITLE */
-.subtitle {
-  color: #64748b;
-  margin-bottom: 24px;
-}
-
-/* STUDENT LIST */
-.studentList {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* STUDENT BLOCK */
-.studentBlock {
-  background: white;
-  border: 1px solid #e6edf3;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-/* STUDENT HEADER */
-.studentHeader {
-  width: 100%;
-  padding: 18px 20px;
-  background: transparent;
-  border: none;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  cursor: pointer;
-  text-align: left;
-}
-
-.studentHeader h3 {
-  font-size: 18px;
-  margin-bottom: 2px;
-}
-
-.studentHeader span {
-  font-size: 13px;
-  color: #64748b;
-}
-
-/* PROFILES */
-.profiles {
-  padding: 14px 20px 18px;
-  background: #f8fafc;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* PROFILE ROW */
-.profileRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: none;
-
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* PLATFORM COLORS */
-.leetcode {
-  background: #fff7ed;
-  color: #c2410c;
-}
-
-.github {
-  background: #f1f5f9;
-  color: #0f172a;
-}
-
-.codeforces {
-  background: #eef2ff;
-  color: #4338ca;
-}
-
-.codechef {
-  background: #fef2f2;
-  color: #991b1b;
-}
-
-.hackerrank {
-  background: #ecfdf5;
-  color: #065f46;
-}
-
-.linkedin {
-  background: #eff6ff;
-  color: #1d4ed8;
-}
-
-.profileRow:hover {
-  opacity: 0.9;
-}
+.profile-student-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.profile-card-top { display: flex; align-items: center; gap: 12px; }
+.profile-card-info { flex: 1; min-width: 0; }
+.profile-card-name { font-size: 14px; font-weight: 700; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.profile-card-roll { font-size: 12px; color: var(--text-3); }
+.profile-card-handles { display: flex; flex-direction: column; gap: 6px; }
+.profile-handle-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.profile-handle-platform { width: 80px; color: var(--text-3); }
+.profile-handle-link { color: var(--accent); font-family: monospace; text-decoration: none; }
+.profile-handle-link:hover { text-decoration: underline; }
+.profile-handle-missing { color: var(--text-3); font-style: italic; }
+.profile-card-scores { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.profile-score-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px; text-align: center; }
+.profile-score-val { font-size: 16px; font-weight: 800; color: var(--text-1); }
+.profile-score-lbl { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }

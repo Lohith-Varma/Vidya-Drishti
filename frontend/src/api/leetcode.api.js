@@ -1,6 +1,8 @@
-import api from "./axiosConfig";
+import api from './axiosConfig'
 
-export const getLeetCodeStats = async (username) => {
-  const res = await api.get(`/leetcode/${username}`);
-  return res.data;
-};
+// Backend proxies to LeetCode GraphQL to avoid CORS
+export const getLeetCodeStats = (username) =>
+  api.get(`/integrations/leetcode/${username}`)
+
+export const refreshLeetCodeStats = (username) =>
+  api.post(`/integrations/leetcode/${username}/refresh`)

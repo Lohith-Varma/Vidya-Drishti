@@ -1,2 +1,8 @@
-.admin-profile { max-width:720px; }
-.small-text { color:#6b7280; font-size:14px; }
+.admin-profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+.admin-profile-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 28px 20px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+}
+.admin-role-badge { padding: 5px 14px; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); border-radius: 20px; font-size: 12px; color: var(--accent); font-weight: 600; }
+@media (max-width: 900px) { .admin-profile-layout { grid-template-columns: 1fr; } }
