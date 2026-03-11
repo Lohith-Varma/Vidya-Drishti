@@ -14,29 +14,23 @@ model User {
   name             String
   role             Role     @default(STUDENT)
 
-  // Student-specific
   rollNumber       String?  @unique
   department       String?
   year             String?
   phone            String?
   bio              String?
   avatar           String?
-
-  // Admin-specific
   employeeId       String?  @unique
+  isActive         Boolean  @default(true)
 
-  // Coding handles
   leetcodeHandle   String?
   hackerrankHandle String?
   githubHandle     String?
   codeforcesHandle String?
-
-  // External links
   linkedinUrl      String?
   resumeUrl        String?
   portfolioUrl     String?
 
-  // Cached stats (updated by cron / on-demand)
   totalSolved      Int      @default(0)
   easySolved       Int      @default(0)
   mediumSolved     Int      @default(0)
@@ -49,11 +43,17 @@ model User {
   totalScore       Int      @default(0)
   rank             Int?
 
+  // PLATFORM_ADMIN → collegeId is null
+  // COLLEGE_ADMIN  → collegeId = their college
+  // STUDENT        → collegeId = their college
   collegeId        String?
   college          College?     @relation(fields: [collegeId], references: [id])
 
   submissions      Submission[]
   createdTests     Assessment[] @relation("CreatedBy")
+  onboardedBy      User?        @relation("OnboardedStudents", fields: [onboardedById], references: [id])
+  onboardedById    String?
+  onboardedStudents User[]      @relation("OnboardedStudents")
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -62,55 +62,67 @@ model User {
 }
 
 model College {
-  id        String   @id @default(cuid())
-  name      String
-  code      String   @unique
-  address   String?
-  users     User[]
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  address     String?
+  city        String?
+  state       String?
+  website     String?
+  logoUrl     String?
+  isActive    Boolean  @default(true)
+
+  users       User[]
+  assessments Assessment[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("colleges")
 }
 
 model Assessment {
-  id            String       @id @default(cuid())
+  id            String     @id @default(cuid())
   title         String
   subject       String?
   description   String?
   duration      Int
-  maxScore      Int          @default(0)
+  maxScore      Int        @default(0)
   startDate     DateTime
   endDate       DateTime
-  language      String       @default("multiple")
-  proctored     Boolean      @default(false)
-  status        TestStatus   @default(DRAFT)
+  language      String     @default("multiple")
+  proctored     Boolean    @default(false)
+  status        TestStatus @default(DRAFT)
 
   createdById   String
-  createdBy     User         @relation("CreatedBy", fields: [createdById], references: [id])
+  createdBy     User       @relation("CreatedBy", fields: [createdById], references: [id])
+
+  // Scoped to a college — null = platform-wide
+  collegeId     String?
+  college       College?   @relation(fields: [collegeId], references: [id])
 
   questions     Question[]
   submissions   Submission[]
 
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   @@map("assessments")
 }
 
 model Question {
-  id           String      @id @default(cuid())
+  id           String     @id @default(cuid())
   title        String
   description  String
-  difficulty   Difficulty  @default(MEDIUM)
-  marks        Int         @default(10)
-  timeLimit    Int         @default(1000)
-  memoryLimit  Int         @default(256)
+  difficulty   Difficulty @default(MEDIUM)
+  marks        Int        @default(10)
+  timeLimit    Int        @default(1000)
+  memoryLimit  Int        @default(256)
   constraints  String?
-  order        Int         @default(0)
+  order        Int        @default(0)
 
   assessmentId String
-  assessment   Assessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
   testCases    TestCase[]
   submissions  Submission[] @relation("QuestionSubmissions")
 
@@ -130,24 +142,22 @@ model TestCase {
 }
 
 model Submission {
-  id           String             @id @default(cuid())
-  code         String
-  language     String
-  verdict      Verdict            @default(PENDING)
-  score        Int                @default(0)
-  executionTime Float?
-  memoryUsed   Float?
+  id            String             @id @default(cuid())
+  code          String
+  language      String
+  verdict       Verdict            @default(PENDING)
+  score         Int                @default(0)
+  executionTime Float? 
+  memoryUsed    Float?
 
   studentId    String
   student      User               @relation(fields: [studentId], references: [id])
-
   assessmentId String
   assessment   Assessment         @relation(fields: [assessmentId], references: [id])
-
   questionId   String?
   question     Question?          @relation("QuestionSubmissions", fields: [questionId], references: [id])
-
   results      SubmissionResult[]
+
   submittedAt  DateTime           @default(now())
 
   @@map("submissions")
@@ -168,29 +178,30 @@ model SubmissionResult {
   @@map("submission_results")
 }
 
-enum Role {
-  STUDENT
-  ADMIN
+enum Role       { 
+  PLATFORM_ADMIN 
+  COLLEGE_ADMIN 
+  STUDENT 
 }
 
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
+enum Difficulty { 
+  EASY 
+  MEDIUM 
+  HARD 
 }
 
-enum TestStatus {
-  DRAFT
-  PUBLISHED
-  ENDED
+enum TestStatus { 
+  DRAFT 
+  PUBLISHED 
+  ENDED 
 }
 
-enum Verdict {
-  PENDING
-  AC
-  WA
-  TLE
-  MLE
-  RE
-  CE
+enum Verdict { 
+  PENDING 
+  AC 
+  WA 
+  TLE 
+  MLE 
+  RE 
+  CE 
 }
