@@ -157,7 +157,7 @@ model Submission {
   questionId   String?
   question     Question?          @relation("QuestionSubmissions", fields: [questionId], references: [id])
   results      SubmissionResult[]
-
+  
   submittedAt  DateTime           @default(now())
 
   @@map("submissions")
